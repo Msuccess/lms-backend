@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { UserRole } from 'src/shared/user-base.entity';
+import { UserRole } from 'src/shared/enums/role.enum';
 
 export class InstitutionDto {
   public readonly institutionID: string;

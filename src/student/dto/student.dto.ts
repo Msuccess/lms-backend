@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { UserGender, UserRole } from 'src/shared/user-base.entity';
+import { UserGender } from 'src/shared/enums/gender.enum';
+import { UserRole } from 'src/shared/enums/role.enum';
 
 export class StudentDto {
   public readonly studentID: string;
