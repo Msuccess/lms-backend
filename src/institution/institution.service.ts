@@ -1,7 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryModel } from 'src/shared/model/query.model';
-import { PasswordEncryptionService } from 'src/shared/password-encryption/password-encryption.service';
 import { ResultException } from 'src/shared/result';
 import { InstitutionDto } from './dto/institution.dto';
 import { InstitutionRepository } from './institution.repository';
@@ -11,7 +10,6 @@ export class InstitutionService {
   constructor(
     @InjectRepository(InstitutionRepository)
     private readonly institutionRepository: InstitutionRepository,
-    private passwordEncryptionService: PasswordEncryptionService,
   ) {}
 
   public async getInstitutions(query: QueryModel): Promise<any> {
@@ -35,14 +33,7 @@ export class InstitutionService {
   }
   public async addInstitution(newInstitution: InstitutionDto): Promise<any> {
     try {
-      const hashedPassword = await this.passwordEncryptionService.harshPassword(
-        newInstitution.password,
-      );
-      const institutionDetails = {
-        ...newInstitution,
-        password: hashedPassword,
-      };
-      return await this.institutionRepository.save(institutionDetails);
+      return await this.institutionRepository.save(newInstitution);
     } catch (error) {
       return new ResultException(error, HttpStatus.BAD_REQUEST);
     }

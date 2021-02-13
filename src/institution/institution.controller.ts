@@ -46,19 +46,19 @@ export class InstitutionController {
       .json({ message: 'Institution data', data: response });
   }
 
-  @Post()
-  // @Roles('admin')
-  public async create(
-    @Body() institutionDetails: InstitutionDto,
-    @Res() res: Response,
-  ): Promise<any> {
-    const response = await this.institutionService.addInstitution(
-      institutionDetails,
-    );
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Institution Created', data: response });
-  }
+  // @Post()
+  // // @Roles('admin')
+  // public async create(
+  //   @Body() institutionDetails: InstitutionDto,
+  //   @Res() res: Response,
+  // ): Promise<any> {
+  //   const response = await this.institutionService.addInstitution(
+  //     institutionDetails,
+  //   );
+  //   return res
+  //     .status(HttpStatus.OK)
+  //     .json({ message: 'Institution Created', data: response });
+  // }
 
   @Put('/:id')
   // @Roles('admin')

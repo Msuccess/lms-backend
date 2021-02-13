@@ -21,7 +21,7 @@ export class StudentDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'Email Class cannot be null' })
   @IsEmail()
-  public email: [];
+  public email: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Phone Number cannot be null' })
@@ -33,7 +33,7 @@ export class StudentDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Class cannot be null' })
-  public userClass: [];
+  public userClass: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Gender cannot be null' })

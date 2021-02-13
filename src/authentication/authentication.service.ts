@@ -1,133 +1,268 @@
+import { StudentService } from './../student/student.service';
+import { UserRole } from './../shared/enums/role.enum';
+import { CreateInstitutionDto } from './../institution/dto/create-institution.dto';
+import { InstitutionService } from './../institution/institution.service';
+import { TeacherService } from './../teacher/teacher.service';
+import { CreateTeacherDto } from './../teacher/dto/create-teacher.dto';
+import { ResultException } from './../shared/result';
+import { EXPIRESIN } from './../config/config';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordEncrypterService } from './auth-configuration/password-encrypter.service';
+import { RegisterDto } from './dto/register.dto';
+import { IdentityUserDto } from './dto/identity-user.dto';
+import { IdentityUserService } from './identityUser/identityuser.service';
+import { Connection } from 'typeorm';
+import { InjectConnection } from '@nestjs/typeorm';
+import { CreateStudentDto } from '../student/dto/create-student.dto';
 
 @Injectable()
 export class AuthenticationService {
-  // constructor(
-  //   private readonly passwordEncryptedService: PasswordEncrypterService,
-  //   private readonly jwtService: JwtService,
-  // ) {}
-  // public async register(data: any): Promise<any> {
-  //   try {
-  //     const dbUser = await this.validateUser(data.email);
-  //     if (typeof dbUser === 'object' && dbUser !== null) {
-  //       throw new HttpException(
-  //         { message: 'User Already Exit' },
-  //         HttpStatus.BAD_REQUEST,
-  //       );
-  //     }
-  //     const password = (
-  //       await this.passwordEncryptedService.encrypt(data.password)
-  //     ).toString();
-  //     const user = new IdentityUserDto();
-  //     user.email = data.email;
-  //     user.fullName = data.fullName;
-  //     user.phonenumber = data.phonenumber;
-  //     user.password = password;
-  //     switch (data.role.toLowerCase()) {
-  //       case 'patient':
-  //         const patient = new PatientDto();
-  //         patient.dateOfBirth = data.dateOfBirth;
-  //         patient.email = data.email;
-  //         patient.fullName = data.fullName;
-  //         patient.password = password;
-  //         patient.phonenumber = data.phonenumber;
-  //         patient.role = UserRole.PATIENT;
-  //         const patientDb = await this.patientService.addPatient(patient);
-  //         if (typeof patientDb === 'object' && patientDb !== null) {
-  //           user.role = UserRole.PATIENT;
-  //           const userDb = await this.identityUserService.createUser(user);
-  //           patient.userId = userDb.id;
-  //           return this.patientService.updatePatient(patientDb.id, patientDb);
-  //         }
-  //       case 'doctor':
-  //         const doctor = new DoctorDto();
-  //         doctor.daysAvailable = data.daysAvailable;
-  //         doctor.email = data.email;
-  //         doctor.fullName = data.fullName;
-  //         doctor.password = password;
-  //         doctor.departmentId = data.departmentId;
-  //         doctor.phonenumber = data.phonenumber;
-  //         doctor.daysAvailable = data.daysAvailable;
-  //         doctor.timesAvailable = data.timesAvailable;
-  //         doctor.role = UserRole.DOCTOR;
-  //         const doctorDb = await this.doctorService.addDoctor(doctor);
-  //         if (typeof doctorDb === 'object' && doctorDb !== null) {
-  //           user.role = UserRole.DOCTOR;
-  //           return this.identityUserService.createUser(user);
-  //         }
-  //       case 'admin':
-  //         user.role = UserRole.ADMIN;
-  //         return this.identityUserService.createUser(user);
-  //       default:
-  //         return new ResultException(
-  //           'Role not allowed',
-  //           HttpStatus.BAD_REQUEST,
-  //         );
-  //     }
-  //   } catch (error) {
-  //     return new ResultException(error, HttpStatus.BAD_REQUEST);
-  //   }
-  // }
-  // public async signIn(user: { email: string; password: string }): Promise<any> {
-  //   try {
-  //     const dbUser = await this.identityUserService.getUserByEmail(user.email);
-  //     if (!dbUser || Object.keys(dbUser).length === 0) {
-  //       return new ResultException('Wrong credentials', HttpStatus.BAD_REQUEST);
-  //     }
-  //     const verifyPassword = await this.passwordEncryptedService.decrypt(
-  //       user.password,
-  //       dbUser.password,
-  //     );
-  //     if (verifyPassword) {
-  //       const token = await this.createToken(
-  //         dbUser.id,
-  //         dbUser.email,
-  //         dbUser.role,
-  //       );
-  //       delete dbUser.password;
-  //       return { token, dbUser };
-  //     }
-  //   } catch (error) {
-  //     return new ResultException(error, HttpStatus.BAD_REQUEST);
-  //   }
-  // }
-  // // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  // public async googleLogin(req: any): Promise<any> {
-  //   if (!req.user) {
-  //     return new ResultException('No user from google', HttpStatus.BAD_REQUEST);
-  //   }
-  //   if (this.validateUser(req.user.email)) {
-  //     const newUser = new IdentityUserDto();
-  //     newUser.email = req.user.email;
-  //     newUser.fullName = req.user.fullName;
-  //     newUser.role = UserRole.PATIENT;
-  //     return this.identityUserService.createUser(newUser);
-  //   } else {
-  //     const dbUser = await this.validateUser(req.user.email);
-  //     const token = await this.createToken(
-  //       dbUser.id,
-  //       req.user.email,
-  //       dbUser.role,
-  //     );
-  //     return { token, dbUser };
-  //   }
-  // }
-  // public async validateUser(email: string): Promise<any> {
-  //   try {
-  //     return await this.identityUserService.getUserByEmail(email);
-  //   } catch (error) {
-  //     return new ResultException(error, HttpStatus.BAD_REQUEST);
-  //   }
-  // }
-  // private async createToken(id: string, email: string, role: UserRole) {
-  //   const expiresIn = EXPIRESIN;
-  //   const user = { id: id, email: email, role: role };
-  //   const token = this.jwtService.sign(user);
-  //   return { expiresIn: expiresIn, token };
-  // }
-  // private verifyToken(token: string): any {
-  //   this.jwtService.verify(token);
-  // }
+  constructor(
+    @InjectConnection() private connection: Connection,
+    private readonly passwordEncryptedService: PasswordEncrypterService,
+    private readonly jwtService: JwtService,
+    private readonly teacherService: TeacherService,
+    private readonly institutionService: InstitutionService,
+    private readonly studentService: StudentService,
+    private readonly identityUserService: IdentityUserService,
+  ) {}
+
+  public async register(data: RegisterDto): Promise<any> {
+    try {
+      const dbUser = await this.validateUser(data.username);
+
+      if (typeof dbUser === 'object' && dbUser !== null) {
+        throw new HttpException(
+          { message: 'Username already exit' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const password = (
+        await this.passwordEncryptedService.encrypt(data.password)
+      ).toString();
+
+      const user = new IdentityUserDto();
+      user.username = data.username;
+      user.fullName = data.fullName;
+      user.phoneNumber = data.phoneNumber;
+      user.password = password;
+
+      switch (data.role.toLowerCase()) {
+        case 'teacher':
+          const userTeacherDb = await this.registerUser(user, UserRole.TEACHER);
+
+          if (typeof userTeacherDb === 'object' && userTeacherDb !== null) {
+            return this.registerTeacher(data, userTeacherDb);
+          }
+          return userTeacherDb;
+
+        case 'institution':
+          const userInstitutionDb = await this.registerUser(
+            user,
+            UserRole.INSTITUTION,
+          );
+
+          if (
+            typeof userInstitutionDb === 'object' &&
+            userInstitutionDb !== null
+          ) {
+            return this.registerInstitution(data, userInstitutionDb);
+          }
+          return userInstitutionDb;
+
+        case 'student':
+          const userStudentDb = await this.registerUser(user, UserRole.TEACHER);
+
+          if (typeof userStudentDb === 'object' && userStudentDb !== null) {
+            return this.registerStudent(data, userStudentDb);
+          }
+          return userStudentDb;
+
+        case 'admin':
+          return await this.registerUser(user, UserRole.ADMIN);
+
+        default:
+          return new ResultException(
+            'Role not allowed',
+            HttpStatus.BAD_REQUEST,
+          );
+      }
+    } catch (error) {
+      return new ResultException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  public async signIn(user: {
+    username: string;
+    password: string;
+  }): Promise<any> {
+    try {
+      const dbUser = await this.identityUserService.getUserByUsername(
+        user.username,
+      );
+
+      if (!dbUser || Object.keys(dbUser).length === 0) {
+        return new ResultException('Wrong credentials', HttpStatus.BAD_REQUEST);
+      }
+
+      const verifyPassword = await this.passwordEncryptedService.decrypt(
+        user.password,
+        dbUser.password,
+      );
+
+      if (verifyPassword) {
+        const token = await this.createToken(
+          dbUser.id,
+          dbUser.username,
+          dbUser.role,
+        );
+        delete dbUser.password;
+        return { token, dbUser };
+      }
+    } catch (error) {
+      return new ResultException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  public async validateUser(username: string): Promise<any> {
+    try {
+      return await this.identityUserService.getUserByUsername(username);
+    } catch (error) {
+      return new ResultException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  public async registerNew(data: RegisterDto): Promise<any> {
+    try {
+      const dbUser = await this.validateUser(data.username);
+
+      if (typeof dbUser === 'object' && dbUser !== null) {
+        throw new HttpException(
+          { message: 'Username already exit' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const password = (
+        await this.passwordEncryptedService.encrypt(data.password)
+      ).toString();
+
+      const user = new IdentityUserDto();
+      user.username = data.username;
+      user.fullName = data.fullName;
+      user.phoneNumber = data.phoneNumber;
+      user.password = password;
+
+      switch (data.role.toLowerCase()) {
+        case 'teacher':
+          user.role = UserRole.TEACHER;
+          const userDb = await this.identityUserService.createUser(user);
+
+          const teacher: CreateTeacherDto = {
+            dateOfBirth: data.dateOfBirth,
+            username: data.username,
+            fullName: data.fullName,
+            password: password,
+            phoneNumber: data.phoneNumber,
+            email: data.email,
+            gender: data.gender,
+            role: UserRole.TEACHER,
+            userClass: data.userClass,
+            userId: userDb.id,
+          };
+          return await this.connection.transaction(async () => {
+            const userDb = await this.identityUserService.createUser(user);
+            userDb.id = teacher.userId;
+            this.teacherService.createTeacher(teacher);
+          });
+
+        default:
+          return new ResultException(
+            'Role not allowed',
+            HttpStatus.BAD_REQUEST,
+          );
+      }
+    } catch (error) {
+      return new ResultException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  private async createToken(id: string, email: string, role: UserRole) {
+    const expiresIn = EXPIRESIN;
+    const user = { id: id, email: email, role: role };
+    const token = this.jwtService.sign(user);
+    return { expiresIn: expiresIn, token };
+  }
+
+  private verifyToken(token: string): any {
+    this.jwtService.verify(token);
+  }
+
+  private async registerUser(user: IdentityUserDto, role: UserRole) {
+    user.role = role;
+    const userDb = await this.identityUserService.createUser(user);
+    return userDb;
+  }
+
+  private registerTeacher(data: RegisterDto, userDb: IdentityUserDto) {
+    const teacher: CreateTeacherDto = {
+      dateOfBirth: data.dateOfBirth,
+      username: data.username,
+      fullName: data.fullName,
+      password: userDb.password,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      gender: data.gender,
+      role: UserRole.TEACHER,
+      userClass: data.userClass,
+      userId: userDb.id,
+    };
+
+    const teacherDb = this.teacherService.createTeacher(teacher);
+    if (typeof teacherDb === 'object' && teacherDb === null) {
+      return this.identityUserService.deleteUser(userDb.id);
+    }
+    return teacherDb;
+  }
+
+  private registerInstitution(data: RegisterDto, userDb: IdentityUserDto): any {
+    const institution: CreateInstitutionDto = {
+      username: data.username,
+      fullName: data.fullName,
+      password: data.password,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      role: UserRole.INSTITUTION,
+      userId: userDb.id,
+    };
+
+    const institutionDb = this.institutionService.addInstitution(institution);
+    if (typeof institutionDb === 'object' && institutionDb === null) {
+      return this.identityUserService.deleteUser(userDb.id);
+    }
+    return institutionDb;
+  }
+
+  private registerStudent(data: RegisterDto, userDb: IdentityUserDto): any {
+    const student: CreateStudentDto = {
+      username: data.username,
+      fullName: data.fullName,
+      password: data.password,
+      phoneNumber: data.phoneNumber,
+      role: UserRole.STUDENT,
+      userId: userDb.id,
+      userClass: data.userClass,
+      dateOfBirth: data.dateOfBirth,
+      email: data.email,
+      gender: data.gender,
+    };
+
+    const studentDb = this.studentService.createStudent(student);
+    if (typeof studentDb === 'object' && studentDb === null) {
+      return this.identityUserService.deleteUser(userDb.id);
+    }
+    return studentDb;
+  }
 }

@@ -1,11 +1,9 @@
+import { UserGender } from './../../shared/enums/gender.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { UserGender } from 'src/shared/enums/gender.enum';
 import { UserRole } from 'src/shared/enums/role.enum';
 
-export class TeacherDto {
-  public readonly teacherID: string;
-
+export class RegisterDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'Username cannot be null' })
   public username: string;

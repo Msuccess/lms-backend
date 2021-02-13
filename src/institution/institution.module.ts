@@ -1,13 +1,20 @@
+import { SharedModule } from './../shared/shared.module';
 import { Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PasswordEncryptionService } from 'src/shared/password-encryption/password-encryption.service';
 import { InstitutionController } from './institution.controller';
 import { InstitutionRepository } from './institution.repository';
 import { InstitutionService } from './institution.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([InstitutionRepository])],
+  imports: [
+    TypeOrmModule.forFeature([InstitutionRepository]),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
+    SharedModule,
+  ],
   controllers: [InstitutionController],
-  providers: [InstitutionService, PasswordEncryptionService],
+  providers: [InstitutionService],
 })
 export class InstitutionModule {}

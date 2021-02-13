@@ -1,10 +1,10 @@
+import { UserRole } from './../../shared/enums/role.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { UserGender } from 'src/shared/enums/gender.enum';
-import { UserRole } from 'src/shared/enums/role.enum';
 
-export class TeacherDto {
-  public readonly teacherID: string;
+export class CreateInstitutionDto {
+  @ApiProperty()
+  userId: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Username cannot be null' })
@@ -19,25 +19,13 @@ export class TeacherDto {
   public fullName: string;
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'Email Class cannot be null' })
+  @IsNotEmpty({ message: 'Email cannot be null' })
   @IsEmail()
   public email: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Phone Number cannot be null' })
   public phoneNumber: string;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Date Of Birth cannot be null' })
-  public dateOfBirth: string;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Class cannot be null' })
-  public userClass: string;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Gender cannot be null' })
-  public gender: UserGender;
 
   public role: UserRole;
 }

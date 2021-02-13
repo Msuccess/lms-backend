@@ -3,8 +3,8 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 import { UserGender } from 'src/shared/enums/gender.enum';
 import { UserRole } from 'src/shared/enums/role.enum';
 
-export class TeacherDto {
-  public readonly teacherID: string;
+export class CreateStudentDto {
+  public userId: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Username cannot be null' })

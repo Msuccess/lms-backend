@@ -1,6 +1,6 @@
+import { UserRole } from './../../shared/enums/role.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { UserRole } from 'src/shared/enums/role.enum';
 
 export class InstitutionDto {
   @ApiProperty()
@@ -13,7 +13,7 @@ export class InstitutionDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Full Name cannot be null' })
-  public fullname: string;
+  public fullName: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Email cannot be null' })
@@ -23,4 +23,6 @@ export class InstitutionDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'Phone Number cannot be null' })
   public phoneNumber: string;
+
+  public role: UserRole;
 }
