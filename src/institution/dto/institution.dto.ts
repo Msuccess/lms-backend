@@ -3,8 +3,6 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 import { UserRole } from 'src/shared/enums/role.enum';
 
 export class InstitutionDto {
-  public readonly institutionID: string;
-
   @ApiProperty()
   @IsNotEmpty({ message: 'Username cannot be null' })
   public username: string;
@@ -25,6 +23,4 @@ export class InstitutionDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'Phone Number cannot be null' })
   public phoneNumber: string;
-
-  public role: UserRole;
 }

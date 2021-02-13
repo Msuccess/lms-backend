@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { SharedBaseEntity } from '../shared/shared-base.entity';
 
-@Entity({ name: 'TblDocument' })
+@Entity({ name: 'documents_tbl' })
 export class DocumentEntity extends SharedBaseEntity {
   @Column()
   documentID: string;
@@ -13,7 +13,7 @@ export class DocumentEntity extends SharedBaseEntity {
   description: string;
 
   @Column()
-  relatedClass: [];
+  relatedClass: string;
 
   @Column({ nullable: false })
   documentUrl: string;

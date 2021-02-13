@@ -1,7 +1,7 @@
 import { SharedBaseEntity } from 'src/shared/shared-base.entity';
 import { Column, Entity } from 'typeorm';
 
-@Entity({ name: 'TblStudent' })
+@Entity({ name: 'students_tbl' })
 export class StudentEntity extends SharedBaseEntity {
   @Column()
   studentID: string;
@@ -13,7 +13,7 @@ export class StudentEntity extends SharedBaseEntity {
   password: string;
 
   @Column()
-  relatedClass: [];
+  relatedClass: string;
 
   @Column({ nullable: false })
   fullname: string;

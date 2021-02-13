@@ -1,19 +1,13 @@
 import { SharedBaseEntity } from 'src/shared/shared-base.entity';
 import { Column, Entity } from 'typeorm';
 
-@Entity({ name: 'TblInstitution' })
+@Entity({ name: 'institution_tbl' })
 export class InstitutionEntity extends SharedBaseEntity {
-  @Column()
-  institutionID: string;
-
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   username: string;
 
   @Column({ nullable: false })
   password: string;
-
-  @Column()
-  relatedClass: [];
 
   @Column({ nullable: false })
   fullname: string;
