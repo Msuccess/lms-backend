@@ -1,3 +1,4 @@
+import { UploadController } from './shared/upload/upload.controller';
 import { IdentityUserService } from './authentication/identityUser/identityuser.service';
 import { PasswordEncrypterService } from './authentication/auth-configuration/password-encrypter.service';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -10,6 +11,7 @@ import { TeacherModule } from './teacher/teacher.module';
 import { InstitutionModule } from './institution/institution.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -23,6 +25,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    MulterModule.register({
+      dest: './uploads',
     }),
     AuthenticationModule,
     CourseModule,

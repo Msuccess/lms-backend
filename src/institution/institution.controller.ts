@@ -35,7 +35,7 @@ export class InstitutionController {
   }
 
   @Get('/:id')
-  @Roles('admin', 'patient', 'doctor')
+  @Roles('admin')
   public async getInstitutionById(
     @Param('id') id: string,
     @Res() res: Response,
@@ -45,20 +45,6 @@ export class InstitutionController {
       .status(HttpStatus.OK)
       .json({ message: 'Institution data', data: response });
   }
-
-  // @Post()
-  // // @Roles('admin')
-  // public async create(
-  //   @Body() institutionDetails: InstitutionDto,
-  //   @Res() res: Response,
-  // ): Promise<any> {
-  //   const response = await this.institutionService.addInstitution(
-  //     institutionDetails,
-  //   );
-  //   return res
-  //     .status(HttpStatus.OK)
-  //     .json({ message: 'Institution Created', data: response });
-  // }
 
   @Put('/:id')
   // @Roles('admin')

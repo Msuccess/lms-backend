@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class CourseDto {
-  public readonly courseID: string;
+  public courseID: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Title cannot be null' })
@@ -18,7 +18,7 @@ export class CourseDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Related Class cannot be null' })
-  public relatedClass: [];
+  public relatedClass: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Course cannot be null' })
