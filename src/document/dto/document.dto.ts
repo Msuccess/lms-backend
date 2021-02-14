@@ -18,9 +18,9 @@ export class DocumentDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Related Class cannot be null' })
-  public relatedClass: [];
+  public relatedClass: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Document cannot be null' })
-  public doucmentUrl: string;
+  public documentUrl: string;
 }

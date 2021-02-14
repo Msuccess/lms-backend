@@ -354,6 +354,19 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fabio.formosa/metamorphosis-nest@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@fabio.formosa/metamorphosis-nest/-/metamorphosis-nest-4.0.2.tgz#224b691ac322088ead002eeb8d97368b6a2238e8"
+  integrity sha512-KI/EyceyWzap2cdgjFRMO08jclbYhQgQ+kACs5n8V5TqjgL62QxP6FdnJugj7OgIfduNc+ECjp86bQYLT/DKjw==
+  dependencies:
+    "@fabio.formosa/metamorphosis" "^4.1.5"
+    class-transformer "^0.2.3"
+
+"@fabio.formosa/metamorphosis@^4.1.5":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@fabio.formosa/metamorphosis/-/metamorphosis-4.1.6.tgz#11f61e13d55c03e450fb01374ae417bf4d71b0c7"
+  integrity sha512-kGMbo0MEHS83FJIa58SRGhVK07LZhnYN4jGepCHUZ24amXZ1/Cufq2+Oc4QW/ACigrR88jd5rwSCnM2uMUOG1Q==
+
 "@hapi/hoek@^9.0.0":
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.1.1.tgz#9daf5745156fd84b8e9889a2dc721f0c58e894aa"
@@ -1915,6 +1928,11 @@ cjs-module-lexer@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-0.6.0.tgz#4186fcca0eae175970aee870b9fe2d6cf8d5655f"
   integrity sha512-uc2Vix1frTfnuzxxu1Hp4ktSvM3QaI4oXl4ZUqL1wjTu/BGki9TrCWoqLTg/drR1KwAEarXuRFCG2Svr1GxPFw==
+
+class-transformer@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.2.3.tgz#598c92ca71dcca73f91ccb875d74a3847ccfa32d"
+  integrity sha512-qsP+0xoavpOlJHuYsQJsN58HXSl8Jvveo+T37rEvCEeRfMWoytAyR0Ua/YsFgpM6AZYZ/og2PJwArwzJl1aXtQ==
 
 class-transformer@^0.3.2:
   version "0.3.2"
