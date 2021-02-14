@@ -14,7 +14,7 @@ import { Response } from 'express';
 import { AuthenticationService } from './authentication.service';
 import { Roles } from './auth-guard/role.decorator';
 import { RegisterDto } from './dto/register.dto';
-import { IdentityUserService } from './identityUser/identityuser.service';
+import { IdentityUserService } from './identityUser/identity-user.service';
 
 @Controller()
 export class AuthenticationController {

@@ -16,5 +16,6 @@ import { PassportModule } from '@nestjs/passport';
   ],
   controllers: [TeacherController],
   providers: [TeacherService],
+  exports: [TeacherService]
 })
 export class TeacherModule {}

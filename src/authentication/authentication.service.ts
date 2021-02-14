@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PasswordEncrypterService } from './auth-configuration/password-encrypter.service';
 import { RegisterDto } from './dto/register.dto';
 import { IdentityUserDto } from './dto/identity-user.dto';
-import { IdentityUserService } from './identityUser/identityuser.service';
+import { IdentityUserService } from './identityUser/identity-user.service';
 import { Connection } from 'typeorm';
 import { InjectConnection } from '@nestjs/typeorm';
 import { CreateStudentDto } from '../student/dto/create-student.dto';

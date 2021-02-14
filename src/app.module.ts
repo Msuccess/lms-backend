@@ -1,4 +1,3 @@
-import { IdentityUserService } from './authentication/identityUser/identityuser.service';
 import { PasswordEncrypterService } from './authentication/auth-configuration/password-encrypter.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationController } from './authentication/authentication.controller';
@@ -10,6 +9,7 @@ import { TeacherModule } from './teacher/teacher.module';
 import { InstitutionModule } from './institution/institution.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { IdentityUserService } from './authentication/identityUser/identity-user.service';
 
 @Module({
   imports: [
@@ -31,7 +31,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TeacherModule,
     InstitutionModule,
   ],
-  controllers: [AuthenticationController],
-  providers: [IdentityUserService, PasswordEncrypterService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
