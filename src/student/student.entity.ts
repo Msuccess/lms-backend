@@ -1,22 +1,16 @@
-import { SharedBaseEntity } from 'src/shared/shared-base.entity';
+import { UsersBaseEntity } from 'src/shared/user-base.entity';
 import { Column, Entity } from 'typeorm';
 
 @Entity({ name: 'students_tbl' })
-export class StudentEntity extends SharedBaseEntity {
+export class StudentEntity extends UsersBaseEntity {
   @Column()
-  studentID: string;
-
-  @Column({ nullable: false })
-  username: string;
-
-  @Column({ nullable: false })
-  password: string;
+  userId?: string;
 
   @Column()
-  relatedClass: string;
+  userClass: string;
 
   @Column({ nullable: false })
-  fullname: string;
+  fullName: string;
 
   @Column({ nullable: false })
   email: string;

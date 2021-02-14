@@ -4,8 +4,6 @@ import { UserGender } from 'src/shared/enums/gender.enum';
 import { UserRole } from 'src/shared/enums/role.enum';
 
 export class TeacherDto {
-  public readonly teacherID: string;
-
   @ApiProperty()
   @IsNotEmpty({ message: 'Username cannot be null' })
   public username: string;
@@ -30,10 +28,6 @@ export class TeacherDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'Date Of Birth cannot be null' })
   public dateOfBirth: string;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Class cannot be null' })
-  public userClass: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Gender cannot be null' })
