@@ -1,13 +1,11 @@
-import { IdentityUserRepository } from './../authentication/identityUser/identity-user.repository';
-import { IdentityUserService } from '../authentication/identityUser/identity-user.service';
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { UploadController } from './upload/upload.controller';
+import { IdentityUserModule } from 'src/authentication/identityUser/identity-user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([IdentityUserRepository])],
+  imports: [IdentityUserModule],
   controllers: [UploadController],
-  providers: [IdentityUserService],
-  exports: [IdentityUserService, UploadController],
+  providers: [],
+  exports: [],
 })
 export class SharedModule {}
