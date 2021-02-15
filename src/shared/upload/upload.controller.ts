@@ -47,7 +47,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/course',
         filename: editFileName,
       }),
       fileFilter: videoFileFilter,
@@ -69,7 +69,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/document',
         filename: editFileName,
       }),
       fileFilter: videoFileFilter,
