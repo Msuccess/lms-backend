@@ -1,5 +1,4 @@
 import { UploadController } from './shared/upload/upload.controller';
-import { IdentityUserService } from './authentication/identityUser/identityuser.service';
 import { PasswordEncrypterService } from './authentication/auth-configuration/password-encrypter.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationController } from './authentication/authentication.controller';
@@ -36,7 +35,7 @@ import { MulterModule } from '@nestjs/platform-express';
     TeacherModule,
     InstitutionModule,
   ],
-  controllers: [AuthenticationController],
-  providers: [IdentityUserService, PasswordEncrypterService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

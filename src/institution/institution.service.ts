@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryModel } from 'src/shared/model/query.model';
 import { ResultException } from 'src/shared/result';
@@ -31,8 +31,10 @@ export class InstitutionService {
       new ResultException(error, HttpStatus.BAD_REQUEST);
     }
   }
-  public async addInstitution(newInstitution: InstitutionDto): Promise<any> {
+  public async createInstitution(newInstitution: InstitutionDto): Promise<any> {
     try {
+      Logger.log('Before insert into institution table');
+      Logger.log(newInstitution);
       return await this.institutionRepository.save(newInstitution);
     } catch (error) {
       return new ResultException(error, HttpStatus.BAD_REQUEST);

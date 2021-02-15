@@ -9,12 +9,15 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth-configuration/jwt.strategy';
 import { AuthenticationController } from './authentication.controller';
+import { TeacherModule } from 'src/teacher/teacher.module';
+import { IdentityUserModule } from './identityUser/identity-user.module';
 
 @Module({
   imports: [
+    IdentityUserModule,
     StudentModule,
     InstitutionModule,
-
+    TeacherModule,
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
@@ -25,7 +28,15 @@ import { AuthenticationController } from './authentication.controller';
     SharedModule,
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, PasswordEncrypterService, JwtStrategy],
-  exports: [PassportModule, AuthenticationService, PasswordEncrypterService],
+  providers: [
+    AuthenticationService,
+    PasswordEncrypterService,
+    JwtStrategy,
+  ],
+  exports: [
+    PassportModule,
+    AuthenticationService,
+    PasswordEncrypterService,
+  ],
 })
 export class AuthenticationModule {}

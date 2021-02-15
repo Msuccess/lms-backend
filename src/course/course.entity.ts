@@ -1,8 +1,8 @@
+import { UsersBaseEntity } from 'src/shared/user-base.entity';
 import { Column, Entity } from 'typeorm';
-import { SharedBaseEntity } from '../shared/shared-base.entity';
 
 @Entity({ name: 'courses_tbl' })
-export class CoursesEntity extends SharedBaseEntity {
+export class CoursesEntity extends UsersBaseEntity {
   @Column()
   courseID: string;
 

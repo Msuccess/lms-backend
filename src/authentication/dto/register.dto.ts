@@ -38,4 +38,6 @@ export class RegisterDto {
   public gender: UserGender;
 
   public role: UserRole;
+
+  public userId = 'default-user-id';
 }

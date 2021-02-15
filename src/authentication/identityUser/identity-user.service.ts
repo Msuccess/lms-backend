@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResultException } from './../../shared/result';
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { ResultException } from '../../shared/result';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { IdentityUserDto } from '../dto/identity-user.dto';
 import { IdentityUserRepository } from './identity-user.repository';
 
@@ -8,7 +8,7 @@ import { IdentityUserRepository } from './identity-user.repository';
 export class IdentityUserService {
   constructor(
     @InjectRepository(IdentityUserRepository)
-    private identityUserRepository: IdentityUserRepository,
+    private readonly identityUserRepository: IdentityUserRepository,
   ) {}
 
   public async getUserByUsername(username: string): Promise<IdentityUserDto> {
@@ -37,7 +37,9 @@ export class IdentityUserService {
 
   public async createUser(user: IdentityUserDto) {
     try {
-      return await this.identityUserRepository.save(user);
+      const results = await this.identityUserRepository.save(user);
+      Logger.log(results);
+      return results;
     } catch (error) {
       new ResultException(error, HttpStatus.BAD_REQUEST);
     }
