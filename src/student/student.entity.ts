@@ -1,6 +1,7 @@
 import { UserRole } from 'src/shared/enums/role.enum';
+import { InstitutionEntity } from './../institution/institution.entity';
 import { UsersBaseEntity } from 'src/shared/user-base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'students_tbl' })
 export class StudentEntity extends UsersBaseEntity {
@@ -31,4 +32,7 @@ export class StudentEntity extends UsersBaseEntity {
 
   @Column({ nullable: false })
   phoneNumber: string;
+
+  @ManyToOne(() => InstitutionEntity, (institution) => institution.student)
+  institution: InstitutionEntity;
 }
