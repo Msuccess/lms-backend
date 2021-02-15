@@ -1,17 +1,20 @@
 import { StudentService } from './../student/student.service';
 import { UserRole } from './../shared/enums/role.enum';
+import { CreateInstitutionDto } from './../institution/dto/create-institution.dto';
 import { InstitutionService } from './../institution/institution.service';
 import { TeacherService } from './../teacher/teacher.service';
+import { CreateTeacherDto } from './../teacher/dto/create-teacher.dto';
 import { ResultException } from './../shared/result';
 import { EXPIRESIN } from './../config/config';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordEncrypterService } from './auth-configuration/password-encrypter.service';
 import { RegisterDto } from './dto/register.dto';
+import { IdentityUserDto } from './dto/identity-user.dto';
 import { IdentityUserService } from './identityUser/identity-user.service';
 import { Connection } from 'typeorm';
 import { InjectConnection } from '@nestjs/typeorm';
-import { LogInDto } from './dto/login.dto';
+import { CreateStudentDto } from '../student/dto/create-student.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -42,148 +45,39 @@ export class AuthenticationService {
 
       const user = { ...data, password: harshedPassword };
 
-      const userObject = await this.removeUnusedFields(
-        [
-          'email',
-          'fullName',
-          'phoneNumber',
-          'dateOfBirth',
-          'userClass',
-          'gender',
-          'userId',
-        ],
-        user,
-      );
-
       switch (data.role.toLowerCase()) {
         case 'teacher':
-          const teacherDetails = { ...userObject, role: UserRole.TEACHER };
+          const userTeacherDb = await this.registerUser(user, UserRole.TEACHER);
 
-          const createNewUserTeacher = await this.identityUserService.createUser(
-            teacherDetails,
-          );
-
-          if (
-            typeof createNewUserTeacher === 'object' &&
-            createNewUserTeacher !== null
-          ) {
-            const getUserDetails = await this.getUserData(data);
-
-            const teacherObject = await this.removeUnusedFields(
-              ['username', 'password', 'role', 'userClass'],
-              getUserDetails,
-            );
-
-            teacherObject.userId = createNewUserTeacher.id;
-
-            const createNewTeacher = this.teacherService.createTeacher(
-              teacherObject,
-            );
-            if (
-              typeof createNewTeacher === 'object' &&
-              createNewTeacher === null
-            ) {
-              return this.identityUserService.deleteUser(
-                createNewUserTeacher.id,
-              );
-            }
-
-            return createNewTeacher;
+          if (typeof userTeacherDb === 'object' && userTeacherDb !== null) {
+            return this.registerTeacher(data, userTeacherDb);
           }
+          return userTeacherDb;
 
         case 'institution':
-          const institutionDetails = {
-            ...userObject,
-            role: UserRole.TEACHER,
-          };
-          const createNewUserInstitution = await this.identityUserService.createUser(
-            institutionDetails,
+          const userInstitutionDb = await this.registerUser(
+            user,
+            UserRole.INSTITUTION,
           );
 
-          Logger.log('This is the insitution userObject');
-          Logger.log(userObject);
-
           if (
-            typeof createNewUserInstitution === 'object' &&
-            createNewUserInstitution !== null
+            typeof userInstitutionDb === 'object' &&
+            userInstitutionDb !== null
           ) {
-            const getUserDetails = await this.getUserData(data);
-
-            Logger.log('This is the getUser Data');
-            Logger.log(getUserDetails);
-
-            const institutionObject = await this.removeUnusedFields(
-              [
-                'username',
-                'password',
-                'role',
-                'userClass',
-                'dateOfBirth',
-                'gender',
-              ],
-              getUserDetails,
-            );
-            institutionObject.userId = createNewUserInstitution.id;
-
-            Logger.log(
-              'This is the insitution userObject after removing others',
-            );
-            Logger.log(institutionObject);
-
-            const createNewTeacher = this.institutionService.createInstitution(
-              institutionObject,
-            );
-            if (
-              typeof createNewTeacher === 'object' &&
-              createNewTeacher === null
-            ) {
-              return this.identityUserService.deleteUser(
-                createNewUserInstitution.id,
-              );
-            }
-
-            return createNewTeacher;
+            return this.registerInstitution(data, userInstitutionDb);
           }
+          return userInstitutionDb;
 
         case 'student':
-          const studentDetails = {
-            ...userObject,
-            role: UserRole.STUDENT,
-          };
-          const createNewUserStudent = await this.identityUserService.createUser(
-            studentDetails,
-          );
+          const userStudentDb = await this.registerUser(user, UserRole.STUDENT);
 
-          if (
-            typeof createNewUserStudent === 'object' &&
-            createNewUserStudent !== null
-          ) {
-            const getUserDetails = await this.getUserData(data);
-
-            const studentObject = await this.removeUnusedFields(
-              ['username', 'password', 'role'],
-              getUserDetails,
-            );
-
-            studentObject.userId = createNewUserStudent.id;
-
-            const createNewStudent = this.studentService.createStudent(
-              studentObject,
-            );
-            if (
-              typeof createNewStudent === 'object' &&
-              createNewStudent === null
-            ) {
-              return this.identityUserService.deleteUser(
-                createNewUserStudent.id,
-              );
-            }
-
-            return createNewStudent;
+          if (typeof userStudentDb === 'object' && userStudentDb !== null) {
+            return this.registerStudent(data, userStudentDb);
           }
+          return userStudentDb;
 
         case 'admin':
-        // return await this.registerUser(user, UserRole.ADMIN);
+          return await this.registerUser(user, UserRole.ADMIN);
         default:
           return new ResultException(
             'Role not allowed',
@@ -195,7 +89,10 @@ export class AuthenticationService {
     }
   }
 
-  public async signIn(user: LogInDto): Promise<any> {
+  public async signIn(user: {
+    username: string;
+    password: string;
+  }): Promise<any> {
     try {
       const dbUser = await this.identityUserService.getUserByUsername(
         user.username,
@@ -232,20 +129,57 @@ export class AuthenticationService {
     }
   }
 
-  public async removeUnusedFields(
-    deleteParameters: string[],
-    data: RegisterDto,
-  ) {
-    deleteParameters.forEach(function (i) {
-      delete data[i];
-    });
+  public async registerNew(data: RegisterDto): Promise<any> {
+    try {
+      const dbUser = await this.validateUser(data.username);
 
-    return data;
-  }
+      if (typeof dbUser === 'object' && dbUser !== null) {
+        throw new HttpException(
+          { message: 'Username already exit' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
 
-  public async getUserData(data: RegisterDto) {
-    const userData = data;
-    return userData;
+      const hashedPassword = (
+        await this.passwordEncryptedService.encrypt(data.password)
+      ).toString();
+
+      const user = new IdentityUserDto();
+      user.username = data.username;
+      user.password = hashedPassword;
+
+      switch (data.role.toLowerCase()) {
+        case 'teacher':
+          user.role = UserRole.TEACHER;
+          const userDb = await this.identityUserService.createUser(user);
+
+          const teacher: CreateTeacherDto = {
+            dateOfBirth: data.dateOfBirth,
+            username: data.username,
+            fullName: data.fullName,
+            password: hashedPassword,
+            phoneNumber: data.phoneNumber,
+            email: data.email,
+            gender: data.gender,
+            role: UserRole.TEACHER,
+            userClass: data.userClass,
+            userId: userDb.id,
+          };
+          return await this.connection.transaction(async () => {
+            const userDb = await this.identityUserService.createUser(user);
+            userDb.id = teacher.userId;
+            this.teacherService.createTeacher(teacher);
+          });
+
+        default:
+          return new ResultException(
+            'Role not allowed',
+            HttpStatus.BAD_REQUEST,
+          );
+      }
+    } catch (error) {
+      return new ResultException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   private async createToken(id: string, email: string, role: UserRole) {
@@ -257,5 +191,73 @@ export class AuthenticationService {
 
   private verifyToken(token: string): any {
     this.jwtService.verify(token);
+  }
+
+  private async registerUser(user: IdentityUserDto, role: UserRole) {
+    user.role = role;
+    const userDb = await this.identityUserService.createUser(user);
+    return userDb;
+  }
+
+  private registerTeacher(data: RegisterDto, userDb: IdentityUserDto) {
+    const teacher: CreateTeacherDto = {
+      dateOfBirth: data.dateOfBirth,
+      username: data.username,
+      fullName: data.fullName,
+      password: userDb.password,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      gender: data.gender,
+      role: UserRole.TEACHER,
+      userClass: data.userClass,
+      userId: userDb.id,
+    };
+
+    const teacherDb = this.teacherService.createTeacher(teacher);
+    if (typeof teacherDb === 'object' && teacherDb === null) {
+      return this.identityUserService.deleteUser(userDb.id);
+    }
+    return teacherDb;
+  }
+
+  private registerInstitution(data: RegisterDto, userDb: IdentityUserDto): any {
+    const institution: CreateInstitutionDto = {
+      username: data.username,
+      fullName: data.fullName,
+      password: data.password,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      role: UserRole.INSTITUTION,
+      userId: userDb.id,
+    };
+
+    const institutionDb = this.institutionService.createInstitution(
+      institution,
+    );
+    if (typeof institutionDb === 'object' && institutionDb === null) {
+      return this.identityUserService.deleteUser(userDb.id);
+    }
+    return institutionDb;
+  }
+
+  private registerStudent(data: RegisterDto, userDb: IdentityUserDto): any {
+    const student: CreateStudentDto = {
+      username: data.username,
+      fullName: data.fullName,
+      password: data.password,
+      phoneNumber: data.phoneNumber,
+      role: UserRole.STUDENT,
+      userId: userDb.id,
+      userClass: data.userClass,
+      dateOfBirth: data.dateOfBirth,
+      email: data.email,
+      gender: data.gender,
+    };
+
+    const studentDb = this.studentService.createStudent(student);
+    if (typeof studentDb === 'object' && studentDb === null) {
+      return this.identityUserService.deleteUser(userDb.id);
+    }
+    return studentDb;
   }
 }

@@ -27,5 +27,7 @@ export class CreateInstitutionDto {
   @IsNotEmpty({ message: 'Phone Number cannot be null' })
   public phoneNumber: string;
 
+  @ApiProperty()
+  @IsNotEmpty({ message: 'User Role cannot be Null' })
   public role: UserRole;
 }
