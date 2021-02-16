@@ -8,7 +8,6 @@ export class LogInDto {
   public password: string;
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'Email cannot be null' })
-  @IsEmail()
+  @IsNotEmpty({ message: 'Username cannot be null' })
   public username: string;
 }

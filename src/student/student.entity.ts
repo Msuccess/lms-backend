@@ -8,11 +8,14 @@ export class StudentEntity extends UsersBaseEntity {
   @Column()
   userId?: string;
 
-  @Column()
+  @Column({ nullable: false })
   userClass: string;
 
   @Column({ nullable: false })
   username: string;
+
+  @Column({ nullable: false })
+  dateOfBirth: string;
 
   @Column({ nullable: false })
   password: string;

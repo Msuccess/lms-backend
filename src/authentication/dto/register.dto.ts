@@ -26,18 +26,15 @@ export class RegisterDto {
   public phoneNumber: string;
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'Date Of Birth cannot be null' })
-  public dateOfBirth: string;
+  public dateOfBirth?: string;
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'Class cannot be null' })
-  public userClass: string;
+  public userClass?: string;
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'Gender cannot be null' })
-  public gender: UserGender;
+  public gender?: UserGender;
 
+  @ApiProperty()
+  @IsNotEmpty({ message: 'Role cannot be null' })
   public role: UserRole;
-
-  public userId = 'default-user-id';
 }

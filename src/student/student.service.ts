@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryModel } from 'src/shared/model/query.model';
 import { ResultException } from 'src/shared/result';
@@ -14,9 +14,9 @@ export class StudentService {
 
   public async createStudent(studentDetails: CreateStudentDto): Promise<any> {
     try {
-      Logger.log('Before insert into Student table');
-      Logger.log(studentDetails);
-      return await this.studentRepository.save(studentDetails);
+      const studentInfo = await this.studentRepository.save(studentDetails);
+      delete studentInfo.password;
+      return studentInfo;
     } catch (error) {
       return new ResultException(error, HttpStatus.BAD_REQUEST);
     }

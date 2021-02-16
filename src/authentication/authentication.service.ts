@@ -15,6 +15,7 @@ import { IdentityUserService } from './identityUser/identity-user.service';
 import { Connection } from 'typeorm';
 import { InjectConnection } from '@nestjs/typeorm';
 import { CreateStudentDto } from '../student/dto/create-student.dto';
+import { LogInDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -39,11 +40,11 @@ export class AuthenticationService {
         );
       }
 
-      const harshedPassword = (
+      const hashedPassword = (
         await this.passwordEncryptedService.encrypt(data.password)
       ).toString();
 
-      const user = { ...data, password: harshedPassword };
+      const user = { ...data, password: hashedPassword };
 
       switch (data.role.toLowerCase()) {
         case 'teacher':
@@ -89,10 +90,7 @@ export class AuthenticationService {
     }
   }
 
-  public async signIn(user: {
-    username: string;
-    password: string;
-  }): Promise<any> {
+  public async signIn(user: LogInDto): Promise<any> {
     try {
       const dbUser = await this.identityUserService.getUserByUsername(
         user.username,
@@ -124,59 +122,6 @@ export class AuthenticationService {
   public async validateUser(username: string): Promise<any> {
     try {
       return await this.identityUserService.getUserByUsername(username);
-    } catch (error) {
-      return new ResultException(error, HttpStatus.BAD_REQUEST);
-    }
-  }
-
-  public async registerNew(data: RegisterDto): Promise<any> {
-    try {
-      const dbUser = await this.validateUser(data.username);
-
-      if (typeof dbUser === 'object' && dbUser !== null) {
-        throw new HttpException(
-          { message: 'Username already exit' },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-      const hashedPassword = (
-        await this.passwordEncryptedService.encrypt(data.password)
-      ).toString();
-
-      const user = new IdentityUserDto();
-      user.username = data.username;
-      user.password = hashedPassword;
-
-      switch (data.role.toLowerCase()) {
-        case 'teacher':
-          user.role = UserRole.TEACHER;
-          const userDb = await this.identityUserService.createUser(user);
-
-          const teacher: CreateTeacherDto = {
-            dateOfBirth: data.dateOfBirth,
-            username: data.username,
-            fullName: data.fullName,
-            password: hashedPassword,
-            phoneNumber: data.phoneNumber,
-            email: data.email,
-            gender: data.gender,
-            role: UserRole.TEACHER,
-            userClass: data.userClass,
-            userId: userDb.id,
-          };
-          return await this.connection.transaction(async () => {
-            const userDb = await this.identityUserService.createUser(user);
-            userDb.id = teacher.userId;
-            this.teacherService.createTeacher(teacher);
-          });
-
-        default:
-          return new ResultException(
-            'Role not allowed',
-            HttpStatus.BAD_REQUEST,
-          );
-      }
     } catch (error) {
       return new ResultException(error, HttpStatus.BAD_REQUEST);
     }
@@ -224,7 +169,7 @@ export class AuthenticationService {
     const institution: CreateInstitutionDto = {
       username: data.username,
       fullName: data.fullName,
-      password: data.password,
+      password: userDb.password,
       phoneNumber: data.phoneNumber,
       email: data.email,
       role: UserRole.INSTITUTION,
@@ -244,7 +189,7 @@ export class AuthenticationService {
     const student: CreateStudentDto = {
       username: data.username,
       fullName: data.fullName,
-      password: data.password,
+      password: userDb.password,
       phoneNumber: data.phoneNumber,
       role: UserRole.STUDENT,
       userId: userDb.id,

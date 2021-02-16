@@ -11,6 +11,7 @@ import { InstitutionModule } from './institution/institution.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
+import { UsersClassModule } from './users-class/users-class.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { MulterModule } from '@nestjs/platform-express';
     StudentModule,
     TeacherModule,
     InstitutionModule,
+    UsersClassModule,
   ],
   controllers: [],
   providers: [],

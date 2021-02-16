@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeacherRepository } from './teacher.repository';
@@ -14,9 +14,9 @@ export class TeacherService {
 
   public async createTeacher(teacherDetails: CreateTeacherDto): Promise<any> {
     try {
-      Logger.log(`This is just before enters Teachers Database`);
-      Logger.log(teacherDetails);
-      return await this.teacherRepository.save(teacherDetails);
+      const teacherInfo = await this.teacherRepository.save(teacherDetails);
+      delete teacherInfo.password;
+      return teacherInfo;
     } catch (error) {
       return new ResultException(error, HttpStatus.BAD_REQUEST);
     }

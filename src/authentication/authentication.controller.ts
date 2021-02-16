@@ -16,6 +16,7 @@ import { Roles } from './auth-guard/role.decorator';
 import { RegisterDto } from './dto/register.dto';
 import { IdentityUserService } from './identityUser/identity-user.service';
 import { ApiTags } from '@nestjs/swagger';
+import { LogInDto } from './dto/login.dto';
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
@@ -36,10 +37,7 @@ export class AuthenticationController {
 
   @Post('login')
   @UsePipes(new ValidatorPipe())
-  public async loginUser(
-    @Body() user: { username: string; password: string },
-    @Res() res: Response,
-  ) {
+  public async loginUser(@Body() user: LogInDto, @Res() res: Response) {
     const response = await this.authService.signIn(user);
 
     return res

@@ -33,9 +33,11 @@ export class InstitutionService {
   }
   public async createInstitution(newInstitution: InstitutionDto): Promise<any> {
     try {
-      Logger.log('Before insert into institution table');
-      Logger.log(newInstitution);
-      return await this.institutionRepository.save(newInstitution);
+      const institutionInfo = await this.institutionRepository.save(
+        newInstitution,
+      );
+      delete institutionInfo.password;
+      return institutionInfo;
     } catch (error) {
       return new ResultException(error, HttpStatus.BAD_REQUEST);
     }
