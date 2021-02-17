@@ -154,7 +154,6 @@ export class AuthenticationService {
       email: data.email,
       gender: data.gender,
       role: UserRole.TEACHER,
-      userClass: data.userClass,
       userId: userDb.id,
     };
 
