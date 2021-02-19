@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async validate(req: any, _payload: any): Promise<any> {
-    const isValid = await this.authenticationService.validateUser(req.email);
+    const isValid = await this.authenticationService.validateUser(req.username);
     if (!isValid) {
       return new ResultException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }

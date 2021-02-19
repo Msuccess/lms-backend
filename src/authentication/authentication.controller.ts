@@ -17,6 +17,7 @@ import { RegisterDto } from './dto/register.dto';
 import { IdentityUserService } from './identityUser/identity-user.service';
 import { ApiTags } from '@nestjs/swagger';
 import { LogInDto } from './dto/login.dto';
+
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
@@ -46,7 +47,7 @@ export class AuthenticationController {
   }
 
   @Get('users')
-  @Roles('admin')
+  @Roles('admin', 'student', 'institution', 'teacher')
   public async getUsers(@Res() res: Response): Promise<any> {
     const response = await this.identityUserService.getAllUser();
     return res
@@ -55,7 +56,7 @@ export class AuthenticationController {
   }
 
   @Delete('/:id')
-  @Roles('admin')
+  @Roles('admin', 'student', 'institution', 'teacher')
   public async delete(
     @Param('id') id: string,
     @Res() res: Response,
@@ -67,7 +68,7 @@ export class AuthenticationController {
   }
 
   @Get('/:id')
-  @Roles('admin')
+  @Roles('admin', 'student', 'institution', 'teacher')
   public async getUser(
     @Param('id') id: string,
     @Res() res: Response,

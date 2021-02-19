@@ -47,7 +47,7 @@ export class CourseController {
   }
 
   @Post()
-  @Roles('admin', 'teacher', 'institution', 'student')
+  @Roles('admin', 'teacher', 'institution')
   @UsePipes(ValidationPipe)
   public async create(
     @Body() course: CourseDto,

@@ -20,7 +20,7 @@ export class TeacherController {
   constructor(private teacherService: TeacherService) {}
 
   @Get()
-  @Roles('admin')
+  @Roles('admin', 'institution')
   public async getTeacher(
     @Query() query: QueryModel,
     @Res() res: Response,
@@ -32,7 +32,7 @@ export class TeacherController {
   }
 
   @Get('/:id')
-  @Roles('admin')
+  @Roles('admin', 'institution')
   public async getTeacherById(
     @Param('id') id: string,
     @Res() res: Response,
@@ -44,7 +44,7 @@ export class TeacherController {
   }
 
   @Put('/:id')
-  // @Roles('admin')
+  @Roles('admin', 'institution')
   public async updateTeacher(
     @Param('id') id: string,
     @Body() TeacherDetails: CreateTeacherDto,
@@ -60,7 +60,7 @@ export class TeacherController {
   }
 
   @Delete('/:id')
-  // @Roles('admin')
+  @Roles('admin', 'institution')
   public async deleteTeacher(
     @Param('id') id: string,
     @Res() res: Response,
