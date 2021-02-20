@@ -1,4 +1,5 @@
 import {
+  docFileFilter,
   editFileName,
   imageFileFilter,
   videoFileFilter,
@@ -45,7 +46,7 @@ export class UploadController {
 
   @Post('/course')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FileInterceptor('video', {
       storage: diskStorage({
         destination: './uploads/course',
         filename: editFileName,
@@ -72,7 +73,7 @@ export class UploadController {
         destination: './uploads/document',
         filename: editFileName,
       }),
-      fileFilter: videoFileFilter,
+      fileFilter: docFileFilter,
     }),
   )
   public async uploadedDocument(@UploadedFile() file: any) {
@@ -89,12 +90,12 @@ export class UploadController {
 
   @Post('uploadMultipleFiles')
   @UseInterceptors(
-    FilesInterceptor('image', 10, {
+    FilesInterceptor('file', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: editFileName,
       }),
-      fileFilter: imageFileFilter,
+      fileFilter: docFileFilter,
     }),
   )
   public async uploadMultipleFiles(@UploadedFiles() files: any) {
