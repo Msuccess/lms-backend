@@ -6,7 +6,13 @@ import { TeacherService } from './../teacher/teacher.service';
 import { CreateTeacherDto } from './../teacher/dto/create-teacher.dto';
 import { ResultException } from './../shared/result';
 import { EXPIRESIN } from './../config/config';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordEncrypterService } from './auth-configuration/password-encrypter.service';
 import { RegisterDto } from './dto/register.dto';
@@ -25,6 +31,7 @@ export class AuthenticationService {
     private readonly jwtService: JwtService,
     private readonly teacherService: TeacherService,
     private readonly institutionService: InstitutionService,
+    @Inject(forwardRef(() => StudentService))
     private readonly studentService: StudentService,
     private readonly identityUserService: IdentityUserService,
   ) {}

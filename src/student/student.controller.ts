@@ -4,7 +4,9 @@ import {
   Delete,
   Get,
   HttpStatus,
+  Inject,
   Param,
+  Post,
   Put,
   Query,
   Res,
@@ -14,10 +16,26 @@ import { QueryModel } from 'src/shared/model/query.model';
 import { StudentService } from './student.service';
 import { Response } from 'express';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { AuthenticationService } from 'src/authentication/authentication.service';
 
 @Controller('student')
 export class StudentController {
-  constructor(private studentService: StudentService) {}
+  constructor(
+    private studentService: StudentService,
+    private authService: AuthenticationService,
+  ) {}
+
+  @Post()
+  @Roles('admin', 'teacher', 'institution')
+  public async createStudent(
+    @Body() studentInfo: CreateStudentDto,
+    @Res() res: Response,
+  ): Promise<any> {
+    const response = await this.authService.register(studentInfo);
+    return res
+      .status(HttpStatus.OK)
+      .json({ message: 'Student Added Successfully', data: response });
+  }
 
   @Get()
   @Roles('admin', 'teacher', 'institution')
