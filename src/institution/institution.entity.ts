@@ -6,6 +6,7 @@ import { UsersBaseEntity } from 'src/shared/user-base.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { DocumentEntity } from 'src/document/document.entity';
 import { UserClassEntity } from 'src/users-class/user-class.entity';
+import { SubjectsEntity } from 'src/subjects/subjects.entity';
 
 @Entity({ name: 'institution_tbl' })
 export class InstitutionEntity extends UsersBaseEntity {
@@ -46,6 +47,9 @@ export class InstitutionEntity extends UsersBaseEntity {
   @OneToMany(() => TeacherEntity, (teacher) => teacher.institution)
   teacher: TeacherEntity[];
 
-  @OneToMany(() => UserClassEntity, (userclass) => userclass.institution)
-  userclass: UserClassEntity[];
+  @OneToMany(() => UserClassEntity, (userClass) => userClass.institution)
+  userClass: UserClassEntity[];
+
+  @OneToMany(() => SubjectsEntity, (subjects) => subjects.institution)
+  subjects: SubjectsEntity[];
 }

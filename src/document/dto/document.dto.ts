@@ -18,7 +18,7 @@ export class DocumentDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Related Class cannot be null' })
-  public relatedClass: string;
+  public userClass: any;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Document cannot be null' })

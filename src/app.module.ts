@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { UsersClassModule } from './users-class/users-class.module';
+import { SubjectsModule } from './subjects/subjects.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UsersClassModule } from './users-class/users-class.module';
     InstitutionModule,
     UsersClassModule,
     AuthenticationModule,
+    SubjectsModule,
   ],
   controllers: [],
   providers: [],

@@ -24,6 +24,18 @@ export class DocumentController {
 
   @Get()
   @Roles('admin', 'teacher', 'institution', 'student')
+  public async createDocuments(
+    @Res() res: Response,
+    @Body() documentInfo: DocumentDto,
+  ): Promise<any> {
+    const response = await this.documentService.addDocument(documentInfo);
+    return res
+      .status(HttpStatus.OK)
+      .json({ message: 'Document Added Successfully', data: response });
+  }
+
+  @Get()
+  @Roles('admin', 'teacher', 'institution', 'student')
   public async getDocuments(
     @Res() res: Response,
     @Query() query: QueryModel,

@@ -1,6 +1,7 @@
 import { InstitutionEntity } from './../institution/institution.entity';
 import { UsersBaseEntity } from 'src/shared/user-base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
+import { UserClassEntity } from 'src/users-class/user-class.entity';
 
 @Entity({ name: 'courses_tbl' })
 export class CoursesEntity extends UsersBaseEntity {
@@ -21,4 +22,7 @@ export class CoursesEntity extends UsersBaseEntity {
 
   @ManyToOne(() => InstitutionEntity, (institution) => institution.document)
   institution: InstitutionEntity;
+
+  @ManyToOne(() => UserClassEntity, (userClass) => userClass.courses)
+  userClass: UserClassEntity;
 }
