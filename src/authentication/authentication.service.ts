@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordEncrypterService } from './auth-configuration/password-encrypter.service';
@@ -164,6 +165,8 @@ export class AuthenticationService {
       userId: userDb.id,
     };
 
+    Logger.log(teacher);
+
     const teacherDb = this.teacherService.createTeacher(teacher);
     if (typeof teacherDb === 'object' && teacherDb === null) {
       return this.identityUserService.deleteUser(userDb.id);
@@ -199,7 +202,7 @@ export class AuthenticationService {
       phoneNumber: data.phoneNumber,
       role: UserRole.STUDENT,
       userId: userDb.id,
-      userClass: data.userClass,
+      userClassId: data.userClass,
       dateOfBirth: data.dateOfBirth,
       email: data.email,
       gender: data.gender,

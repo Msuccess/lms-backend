@@ -5,6 +5,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Post,
   Put,
   Query,
   Res,
@@ -14,10 +15,26 @@ import { QueryModel } from 'src/shared/model/query.model';
 import { TeacherService } from './teacher.service';
 import { Response } from 'express';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
+import { AuthenticationService } from 'src/authentication/authentication.service';
 
 @Controller('teacher')
 export class TeacherController {
-  constructor(private teacherService: TeacherService) {}
+  constructor(
+    private teacherService: TeacherService,
+    private authService: AuthenticationService,
+  ) {}
+
+  @Post()
+  @Roles('admin', 'institution')
+  public async createTeacher(
+    @Body() teacherInfo: CreateTeacherDto,
+    @Res() res: Response,
+  ): Promise<any> {
+    const response = await this.authService.register(teacherInfo);
+    return res
+      .status(HttpStatus.OK)
+      .json({ message: 'Teacher Added Successfully', data: response });
+  }
 
   @Get()
   @Roles('admin', 'institution')

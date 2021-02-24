@@ -24,7 +24,7 @@ export class UploadController {
   // upload single file
   @Post()
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads',
         filename: editFileName,
@@ -46,7 +46,7 @@ export class UploadController {
 
   @Post('/course')
   @UseInterceptors(
-    FileInterceptor('video', {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/course',
         filename: editFileName,
@@ -61,7 +61,7 @@ export class UploadController {
     };
     return {
       status: HttpStatus.OK,
-      message: 'Image uploaded successfully!',
+      message: 'Video uploaded successfully!',
       data: response,
     };
   }
@@ -83,7 +83,7 @@ export class UploadController {
     };
     return {
       status: HttpStatus.OK,
-      message: 'Image uploaded successfully!',
+      message: 'Document uploaded successfully!',
       data: response,
     };
   }

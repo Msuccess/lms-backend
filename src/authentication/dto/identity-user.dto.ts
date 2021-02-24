@@ -6,11 +6,7 @@ export class IdentityUserDto {
   public id?: string;
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'Email cannot be null' })
-  public userId?: string;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Email cannot be null' })
+  @IsNotEmpty({ message: 'Username cannot be null' })
   public username: string;
 
   @ApiProperty()
@@ -18,5 +14,8 @@ export class IdentityUserDto {
   @IsNotEmpty({ message: 'password cannot be null' })
   public password: string;
 
+  @ApiProperty()
+  @Length(8)
+  @IsNotEmpty({ message: 'Role cannot be null' })
   public role: UserRole;
 }

@@ -2,6 +2,7 @@ import { UserRole } from 'src/shared/enums/role.enum';
 import { InstitutionEntity } from './../institution/institution.entity';
 import { UsersBaseEntity } from 'src/shared/user-base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
+import { UserClassEntity } from 'src/users-class/user-class.entity';
 
 @Entity({ name: 'students_tbl' })
 export class StudentEntity extends UsersBaseEntity {
@@ -9,7 +10,7 @@ export class StudentEntity extends UsersBaseEntity {
   userId?: string;
 
   @Column({ nullable: false })
-  userClass: string;
+  userClassId: string;
 
   @Column({ nullable: false })
   username: string;
@@ -19,6 +20,9 @@ export class StudentEntity extends UsersBaseEntity {
 
   @Column({ nullable: false })
   password: string;
+
+  @Column({ nullable: false })
+  gender: string;
 
   @Column({
     type: 'enum',
@@ -38,4 +42,7 @@ export class StudentEntity extends UsersBaseEntity {
 
   @ManyToOne(() => InstitutionEntity, (institution) => institution.student)
   institution: InstitutionEntity;
+
+  @ManyToOne(() => UserClassEntity, (userClass) => userClass.student)
+  userClass: UserClassEntity;
 }

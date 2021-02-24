@@ -28,6 +28,7 @@ export class StudentService {
         take: query.pageSize,
         skip: query.pageSize * (query.page - 1),
         order: { createdAt: 'DESC' },
+        relations: ['userClass', 'institution'],
       });
     } catch (error) {
       new ResultException(error, HttpStatus.BAD_REQUEST);

@@ -5,7 +5,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'teachers_tbl' })
 export class TeacherEntity extends UsersBaseEntity {
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   userId?: string;
 
   @Column({ nullable: false })
@@ -13,6 +13,12 @@ export class TeacherEntity extends UsersBaseEntity {
 
   @Column({ nullable: false })
   password: string;
+
+  @Column({ nullable: false })
+  gender: string;
+
+  @Column({ nullable: false })
+  dateOfBirth: string;
 
   @Column({
     type: 'enum',

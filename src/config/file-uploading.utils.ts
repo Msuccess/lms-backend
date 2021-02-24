@@ -18,15 +18,11 @@ export const imageFileFilter = (
   callback(null, true);
 };
 
-export const videoFileFilter = (
-  req: any,
-  file: { originalname: string },
-  callback: (arg0: HttpException, arg1: boolean) => void,
-) => {
-  if (!file.originalname.match(/\.(mp4,flv,mkv)$/)) {
+export const videoFileFilter = (req, file, callback) => {
+  if (!file.originalname.match(/\.(mp4|flv|mkv|gif|mov|avi|webm|f4v|swf)$/)) {
     return callback(
       new HttpException(
-        'Only video files are allowed!',
+        'Only Videos files are allowed!',
         HttpStatus.BAD_REQUEST,
       ),
       false,
@@ -40,7 +36,7 @@ export const docFileFilter = (
   file: { originalname: string },
   callback: (arg0: HttpException, arg1: boolean) => void,
 ) => {
-  if (!file.originalname.match(/\.(doc,docx,pdf)$/)) {
+  if (!file.originalname.match(/\.(doc|docx|pdf|xls|xlsx|ppt|pptx|txt|odx)$/)) {
     return callback(
       new HttpException(
         'Only documents files are allowed!',
@@ -52,11 +48,7 @@ export const docFileFilter = (
   callback(null, true);
 };
 
-export const editFileName = (
-  req: any,
-  file: { originalname: string },
-  callback: (arg0: any, arg1: string) => void,
-) => {
+export const editFileName = (req, file, callback) => {
   const name = file.originalname.split('.')[0];
   const fileExtName = extname(file.originalname);
   const randomName = Array(4)

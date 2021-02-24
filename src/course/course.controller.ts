@@ -22,6 +22,20 @@ import { CourseService } from './course.service';
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
+  @Post()
+  @Roles('admin', 'teacher', 'institution')
+  @UsePipes(ValidationPipe)
+  public async create(
+    @Body() course: CourseDto,
+    @Res() res: Response,
+  ): Promise<any> {
+    const response = await this.courseService.addCourse(course);
+
+    return res
+      .status(HttpStatus.CREATED)
+      .json({ message: 'Course Created', data: response });
+  }
+
   @Get()
   @Roles('admin', 'teacher', 'institution', 'student')
   public async getCourses(
@@ -44,20 +58,6 @@ export class CourseController {
     return res
       .status(HttpStatus.OK)
       .json({ message: 'Course Data', data: response });
-  }
-
-  @Post()
-  @Roles('admin', 'teacher', 'institution')
-  @UsePipes(ValidationPipe)
-  public async create(
-    @Body() course: CourseDto,
-    @Res() res: Response,
-  ): Promise<any> {
-    const response = await this.courseService.addCourse(course);
-
-    return res
-      .status(HttpStatus.CREATED)
-      .json({ message: 'Course Created', data: response });
   }
 
   @Put('/:id')

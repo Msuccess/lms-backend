@@ -33,11 +33,13 @@ export class CreateStudentDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Class cannot be null' })
-  public userClass: string;
+  public userClassId: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Gender cannot be null' })
   public gender: UserGender;
 
+  @ApiProperty()
+  @IsNotEmpty({ message: 'Role cannot be null' })
   public role: UserRole;
 }
