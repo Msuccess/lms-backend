@@ -9,7 +9,7 @@ import { StudentRepository } from './student.repository';
 export class StudentService {
   constructor(
     @InjectRepository(StudentRepository)
-    private readonly studentRepository: StudentRepository,
+    private readonly studentRepository: StudentRepository
   ) {}
 
   public async createStudent(studentDetails: CreateStudentDto): Promise<any> {
@@ -45,7 +45,7 @@ export class StudentService {
 
   public async updateStudent(
     id: string,
-    studentDetails: CreateStudentDto,
+    studentDetails: CreateStudentDto
   ): Promise<any> {
     try {
       const dbUser = this.getStudent(id);

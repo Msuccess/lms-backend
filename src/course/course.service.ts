@@ -9,7 +9,7 @@ import { CourseDto } from './dto/course.dto';
 export class CourseService {
   constructor(
     @InjectRepository(CourseRepository)
-    private readonly courseRepository: CourseRepository,
+    private readonly courseRepository: CourseRepository
   ) {}
 
   public async getCourses(query: QueryModel): Promise<any> {

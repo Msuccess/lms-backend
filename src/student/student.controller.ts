@@ -22,14 +22,14 @@ import { AuthenticationService } from 'src/authentication/authentication.service
 export class StudentController {
   constructor(
     private studentService: StudentService,
-    private authService: AuthenticationService,
+    private authService: AuthenticationService
   ) {}
 
   @Post()
   @Roles('admin', 'teacher', 'institution')
   public async createStudent(
     @Body() studentInfo: CreateStudentDto,
-    @Res() res: Response,
+    @Res() res: Response
   ): Promise<any> {
     const response = await this.authService.register(studentInfo);
     return res
@@ -41,7 +41,7 @@ export class StudentController {
   @Roles('admin', 'teacher', 'institution')
   public async getStudent(
     @Query() query: QueryModel,
-    @Res() res: Response,
+    @Res() res: Response
   ): Promise<any> {
     const response = await this.studentService.getStudents(query);
     return res
@@ -53,7 +53,7 @@ export class StudentController {
   @Roles('admin', 'teacher', 'institution')
   public async getStudentById(
     @Param('id') id: string,
-    @Res() res: Response,
+    @Res() res: Response
   ): Promise<any> {
     const response = await this.studentService.getStudent(id);
     return res
@@ -66,11 +66,11 @@ export class StudentController {
   public async updateStudent(
     @Param('id') id: string,
     @Body() studentDetails: CreateStudentDto,
-    @Res() res: Response,
+    @Res() res: Response
   ): Promise<any> {
     const response = await this.studentService.updateStudent(
       id,
-      studentDetails,
+      studentDetails
     );
     return res
       .status(HttpStatus.OK)
@@ -81,7 +81,7 @@ export class StudentController {
   @Roles('admin', 'institution')
   public async deleteStudent(
     @Param('id') id: string,
-    @Res() res: Response,
+    @Res() res: Response
   ): Promise<any> {
     const response = await this.studentService.deleteStudent(id);
     return res

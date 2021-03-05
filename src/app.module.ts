@@ -1,3 +1,4 @@
+import { AnalyticsModule } from './analytics/analytics.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { Module } from '@nestjs/common';
 import { CourseModule } from './course/course.module';
@@ -13,6 +14,7 @@ import { SubjectsModule } from './subjects/subjects.module';
 
 @Module({
   imports: [
+    AnalyticsModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',

@@ -16,6 +16,6 @@ import { InstitutionService } from './institution.service';
   ],
   controllers: [InstitutionController],
   providers: [InstitutionService],
-  exports:[InstitutionService]
+  exports: [InstitutionService],
 })
 export class InstitutionModule {}
