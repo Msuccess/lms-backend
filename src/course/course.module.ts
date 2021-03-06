@@ -12,5 +12,6 @@ import { MetamorphosisModule } from '@fabio.formosa/metamorphosis-nest';
   ],
   controllers: [CourseController],
   providers: [CourseService],
+  exports: [CourseService],
 })
 export class CourseModule {}

@@ -5,9 +5,16 @@ import { CourseModule } from 'src/course/course.module';
 import { UsersClassModule } from 'src/users-class/users-class.module';
 import { DocumentModule } from 'src/document/document.module';
 import { InstitutionModule } from 'src/institution/institution.module';
+import { TeacherModule } from 'src/teacher/teacher.module';
 
 @Module({
-  imports: [CourseModule, UsersClassModule, DocumentModule, InstitutionModule],
+  imports: [
+    // CourseModule,
+    // UsersClassModule,
+    // DocumentModule,
+    // InstitutionModule,
+    // TeacherModule,
+  ],
   controllers: [AnalyticsController],
   providers: [AnalyticsService],
 })

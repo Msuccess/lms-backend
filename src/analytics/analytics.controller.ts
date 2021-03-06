@@ -9,52 +9,52 @@ import { User } from 'src/authentication/auth-guard/current-user.decorator';
 
 @Controller('analytics')
 @ApiTags('Analytics')
-@UseGuards(AuthGuard(), RoleGuard)
+// @UseGuards(AuthGuard(), RoleGuard)
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
 
-  @Get('/courses')
-  @Roles('admin')
-  public async getTotalCourses(@Res() res: Response, @User() user: any) {
-    const response = await this.analyticsService.totalNumberCourses(user.id);
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Total Number of Courses', data: response });
-  }
+  // @Get('/courses')
+  // @Roles('admin')
+  // public async getTotalCourses(@Res() res: Response, @User() user: any) {
+  //   const response = await this.analyticsService.totalNumberCourses(user.id);
+  //   return res
+  //     .status(HttpStatus.OK)
+  //     .json({ message: 'Total Number of Courses', data: response });
+  // }
 
-  @Get('/students')
-  @Roles('admin')
-  public async getTotalStudents(@Res() res: Response, @User() user: any) {
-    const response = await this.analyticsService.totalNumberStudents(user.id);
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Total Number of Students', data: response });
-  }
+  // @Get('/students')
+  // @Roles('admin')
+  // public async getTotalStudents(@Res() res: Response, @User() user: any) {
+  //   const response = await this.analyticsService.totalNumberStudents(user.id);
+  //   return res
+  //     .status(HttpStatus.OK)
+  //     .json({ message: 'Total Number of Students', data: response });
+  // }
 
-  @Get('/subjects')
-  @Roles('admin')
-  public async getTotalSubjects(@Res() res: Response, @User() user: any) {
-    const response = await this.analyticsService.totalNumberSubjects(user.id);
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Total Number of Subjects', data: response });
-  }
+  // @Get('/subjects')
+  // @Roles('admin')
+  // public async getTotalSubjects(@Res() res: Response, @User() user: any) {
+  //   const response = await this.analyticsService.totalNumberSubjects(user.id);
+  //   return res
+  //     .status(HttpStatus.OK)
+  //     .json({ message: 'Total Number of Subjects', data: response });
+  // }
 
-  @Get('/teachers')
-  @Roles('admin')
-  public async getTotalTeachers(@Res() res: Response, @User() user: any) {
-    const response = await this.analyticsService.totalNumberTeacher(user.id);
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Total Number of Teachers', data: response });
-  }
+  // @Get('/teachers')
+  // @Roles('admin')
+  // public async getTotalTeachers(@Res() res: Response, @User() user: any) {
+  //   const response = await this.analyticsService.totalNumberTeacher(user.id);
+  //   return res
+  //     .status(HttpStatus.OK)
+  //     .json({ message: 'Total Number of Teachers', data: response });
+  // }
 
-  @Get('/teachers')
-  @Roles('admin')
-  public async getTotalClasses(@Res() res: Response, @User() user: any) {
-    const response = await this.analyticsService.totalNumberClasses(user.id);
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Total Number of Classes', data: response });
-  }
+  // @Get('/teachers')
+  // @Roles('admin')
+  // public async getTotalClasses(@Res() res: Response, @User() user: any) {
+  //   const response = await this.analyticsService.totalNumberClasses(user.id);
+  //   return res
+  //     .status(HttpStatus.OK)
+  //     .json({ message: 'Total Number of Classes', data: response });
+  // }
 }
